@@ -1,18 +1,15 @@
 export function getCity() {
-  const input = document.querySelector('#city-input').value;
+  const cityInput = document.querySelector('#city-input').value;
 
-  if (!input) {
-    return 'please, insert a city.';
-  }
-
-  return input;
+  return cityInput;
 }
 
 export function getCardInfo() {
-  const city = document.querySelector('#city');
-  const temperature = document.querySelector('#temperature');
-  const status = document.querySelector('#status');
-  const icon = document.querySelector('span');
+  const cityHTML = document.querySelector('#city');
+  const tempHTML = document.querySelector('#temperature');
+  const statusHTML = document.querySelector('#status');
+  const iconHTML = document.querySelector('span');
+  const errorHTML = document.querySelector('#error-message');
 
-  return { city, temperature, status, icon };
+  return { cityHTML, tempHTML, statusHTML, iconHTML, errorHTML };
 }
