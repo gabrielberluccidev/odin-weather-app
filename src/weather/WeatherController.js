@@ -1,20 +1,37 @@
 import { getWeather } from './getAPI';
 import { fahrenheitToCelsius } from './convertTemp';
 import { getCity } from './getValues';
-import { validateResult } from './validateResult';
+import { getCardInfo } from './getValues';
 
 export function initAppController() {
   const searchButton = document.querySelector('#search');
 
-  searchButton.addEventListener('click', () => {
-    const city = getCity();
+  searchButton.addEventListener('click', async () => {
+    const { cityHTML, tempHTML, statusHTML, iconHTML, errorHTML } =
+      getCardInfo();
+    errorHTML.textContent = '';
+    tempHTML.textContent = '';
+    cityHTML.textContent = '';
+    statusHTML.textContent = '';
+    iconHTML.textContent = '';
 
-    const result = getWeather(city);
+    try {
+      const cityInput = getCity();
 
-    result.then((result) => {
-      validateResult(result);
-    });
+      if (!cityInput) {
+        throw new Error('Please, insert a city.');
+      }
 
-    const temperature = fahrenheitToCelsius(result);
+      const { temp, cityAPI, icon, status } = await getWeather(cityInput);
+      const temperatureInC = fahrenheitToCelsius(temp);
+
+      tempHTML.textContent = `${temperatureInC.toFixed(1)}°C`;
+      cityHTML.textContent = `${cityAPI}`;
+      iconHTML.textContent = `${icon}`;
+      statusHTML.textContent = `${status}`;
+    } catch (error) {
+      console.error(error.message);
+      errorHTML.textContent = error.message;
+    }
   });
 }
